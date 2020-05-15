@@ -1,0 +1,17 @@
+//
+//  Season.swift
+//
+//  Created by Daniel on 5/14/20.
+//  Copyright © 2020 dk. All rights reserved.
+//
+
+import Foundation
+
+struct Season: Codable {
+    var id: Int
+
+    var air_date: String?
+    var episode_count: Int
+    var name: String
+    var season_number: Int
+}

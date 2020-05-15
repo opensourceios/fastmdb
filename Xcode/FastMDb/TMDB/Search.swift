@@ -27,10 +27,3 @@ struct TvSearch: Codable {
 struct VideoSearch: Codable {
     var results: [Video]
 }
-
-struct Video: Codable {
-    var key: String
-    var name: String
-    var site: String
-    var type: String
-}

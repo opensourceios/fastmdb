@@ -39,25 +39,6 @@ struct Media: Codable {
     var original_name: String?
 }
 
-// TODO: genre and production should move to generic type?
-// TODO: genre should move into its own file
-struct Genre: Codable {
-    var id: Int
-    var name: String
-}
-
-// TODO: production should move into its own file
-struct Production: Codable {
-    var id: Int
-    var name: String
-}
-
-extension Production {
-    var listItem: Item {
-        return Item(id: id, title: name, destination: .production)
-    }
-}
-
 extension Media {
     var listItem: Item {
         var sub: [String] = []
