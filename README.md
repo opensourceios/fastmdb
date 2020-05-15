@@ -1,6 +1,6 @@
 ## fastmdb
 
-Swift iOS app to browse movies, tv, actors, credits :zap:
+Swift iOS app to browse and search movies, tv, actors, credits :mag:
 
 <img src=Images/0.png>
 

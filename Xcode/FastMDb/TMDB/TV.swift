@@ -27,6 +27,7 @@ struct TV: Codable {
     var episode_run_time: [Int]?
     var genres: [Genre]?
     var homepage: String?
+    var origin_country: [String]?
     var original_language: String?
     var overview: String?
     var networks: [TvNetwork]?
@@ -43,6 +44,14 @@ struct TV: Codable {
 }
 
 extension TV {
+    var countryDisplay: String? {
+        guard
+            let country = origin_country?.first,
+            country != "" else { return nil }
+
+        return country
+    }
+
     var displayName: String {
         if name != original_name {
             return "\(name) (\(original_name))"
@@ -62,6 +71,9 @@ extension TV {
             country != "en",
             let lang = Languages.List[country] {
             sub.append(lang)
+        }
+        else if let country = countryDisplay {
+            sub.append(country)
         }
 
         return Item(id: id, title: displayName, subtitle: sub.joined(separator: Tmdb.separator), destination: .tv)

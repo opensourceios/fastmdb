@@ -38,6 +38,8 @@ class MainViewController: UIViewController {
                         .sorted(by: { $0.release_date ?? "" > $1.release_date ?? "" })
                         .map({ $0.listItem }) else { return }
 
+                // TODO: get director in separate requests (hopefully one single req)
+
                 let buttonUrl = Tmdb.mediaPosterUrl(path: collection.poster_path, size: .xl)
                 self.imageButton.url = buttonUrl
 
@@ -113,28 +115,6 @@ class MainViewController: UIViewController {
         }
     }
 
-    var seasonItem: Item? {
-        didSet {
-            dataSource = DataSource(screen: .list)
-
-            spinner.startAnimating()
-
-            guard let season = seasonItem else { return }
-
-            let url = Tmdb.tvURL(tvId: season.id, seasonNumber: season.seasonNumber)
-            url?.apiGet(type: EpisodeList.self, completion: { (result) in
-                guard
-                    case .success(let r) = result,
-                    let episodes = r.episodes else { return }
-
-                let items = episodes.map { $0.listItem }
-                let section = Section(items: items)
-                self.dataSource.sections = [section]
-                self.updateUI()
-            })
-        }
-    }
-
     var items: [Item]? {
         didSet {
             let section = Section(items: items)
@@ -191,6 +171,13 @@ class MainViewController: UIViewController {
         didSet {
             dataSource = DataSource(screen: .detail)
             updateEpisode(episode)
+        }
+    }
+
+    var seasonItem: Item? {
+        didSet {
+            dataSource = DataSource(screen: .detail)
+            updateSeason(seasonItem)
         }
     }
 
@@ -466,6 +453,28 @@ private extension MainViewController {
         }
     }
 
+    func updateSeason(_ seasonItem: Item?) {
+        spinner.startAnimating()
+
+        guard let item = seasonItem else { return }
+
+        let url = Tmdb.tvURL(tvId: item.id, seasonNumber: item.seasonNumber)
+        url?.apiGet(type: Season.self, completion: { (result) in
+            guard case .success(let season) = result else { return }
+
+            self.dataSource.sections = Section.seasonSections(season)
+
+            let buttonUrl = Tmdb.mediaPosterUrl(path: season.poster_path, size: .xxl)
+            self.imageButton.url = buttonUrl
+
+            let url = Tmdb.mediaPosterUrl(path: season.poster_path, size: .large)
+
+            self.getImage(url: url) { (image) in
+                self.updateUI(image)
+            }
+        })
+    }
+
     func updateTv(_ id: Int?, limit: Int = Constant.numberOfEntries) {
         let provider = TvDataProvider()
         provider.get(id) { (tv) in
@@ -507,6 +516,7 @@ private extension Episode {
 }
 
 private extension Section {
+
     static func contentSections(kind: Tmdb.MoviesType, movie: MediaSearch?, tv: TvSearch?, people: PeopleSearch?) -> [Section] {
         var sections: [Section] = []
 
@@ -530,6 +540,54 @@ private extension Section {
 
         return sections
     }
+
+    static func seasonSections(_ season: Season?) -> [Section] {
+        var sections: [Section] = []
+
+        if
+            let o = season?.overview,
+            o != "" {
+            let item = Item.init(title: o)
+            let section = Section(header: "overview", items: [item])
+            sections.append(section)
+        }
+
+        if let cast = season?.credits?.cast {
+            let items = cast.map { $0.listItemCast }
+            let section = Section(header: "cast", items: items)
+            sections.append(section)
+
+            // TODO: limit number of cast displayed
+        }
+
+        if
+            let crew = season?.credits?.crew,
+            crew.count > 0 {
+            let limit = 4
+            let names = crew.compactMap { $0.name }.unique
+            let top = Array(names.prefix(limit))
+            let item = Item(title: top.joined(separator: ", "))
+            var section = Section(header: "crew", items: [item])
+
+            if crew.count > limit {
+                section.footer = "Showing \(limit) of \(crew.count)"
+            }
+
+            // TODO: allow tapping on footer to show more
+
+            sections.append(section)
+        }
+
+        if let episodes = season?.episodes,
+            episodes.count > 0 {
+            let items = episodes.map { $0.listItem }
+            let section = Section(header: "episodes", items: items)
+            sections.append(section)
+        }
+
+        return sections
+    }
+
 }
 
 extension MainViewController: UIContextMenuInteractionDelegate {

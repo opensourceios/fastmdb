@@ -17,3 +17,7 @@ extension Production {
         return Item(id: id, title: name, destination: .production)
     }
 }
+
+struct ProductionCountry: Codable {
+    var name: String
+}

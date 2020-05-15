@@ -95,7 +95,7 @@ private extension Section {
 
         let uniqueNames = filtered
             .map { $0.name }
-            .unique()
+            .unique
 
         var items: [Item] = []
         for name in uniqueNames {
@@ -179,7 +179,6 @@ private extension Section {
     }
 
     static func metadataSection(movie: Media?) -> Section? {
-        // movie top section (title, metadata, tagline, overview)
         var metadata: [String] = []
 
         if let movie = movie {
@@ -196,6 +195,11 @@ private extension Section {
             // rating
             if let rating = movie.ratingDisplay {
                 metadata.append(rating)
+            }
+
+            // countries
+            if let countries = movie.production_countries {
+                metadata.append(countries.map{$0.name}.joined(separator: ", "))
             }
         }
 
@@ -460,10 +464,6 @@ private extension Int {
 
     }
 
-    var pluralized: String {
-        return self == 1 ? "" : "s"
-    }
-    
 }
 
 private extension Double {

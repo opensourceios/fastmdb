@@ -185,7 +185,7 @@ private extension Section {
 
         let uniqueTitles = crewSorted
             .map { $0.original_title }
-            .unique()
+            .unique
 
         var items: [Item] = []
         for title in uniqueTitles {
@@ -229,7 +229,7 @@ private extension Section {
 
         let uniqueTitles = crewSorted
             .map { $0.name }
-            .unique()
+            .unique
 
         var items: [Item] = []
         for title in uniqueTitles {

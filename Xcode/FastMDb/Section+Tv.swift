@@ -155,6 +155,16 @@ private extension Section {
 
             var sub: [String] = []
 
+            if
+                let country = tv?.original_language,
+                country != "en",
+                let lang = Languages.List[country] {
+                sub.append(lang)
+            }
+            else if let country = tv?.countryDisplay {
+                sub.append(country)
+            }
+
             if let aired = tv?.aired {
                 sub.append(aired)
             }
@@ -162,7 +172,8 @@ private extension Section {
             if
                 let season = tv?.seasonDisplay,
                 let s = tv?.seasons?.first,
-                s.episode_count > 0 {
+                let c = s.episode_count,
+                c > 0 {
 
                 sub.append(season)
             }
@@ -184,20 +195,15 @@ private extension Section {
                 sub.append(rating)
             }
 
-            var remappedSeasons: [Item] = []
-            if let seasons = tv?.seasons {
-                remappedSeasons = seasons.filter {
-                    let count = $0.episode_count
-                    return count > 0
-                }.map { $0.listItem(tvId: tv?.id) }
-            }
             var item = Item(title: display, subtitle: sub.joined(separator: Tmdb.separator))
 
             if
                 let s = tv?.seasons?.first,
-                s.episode_count > 0 {
+                let c = s.episode_count,
+                c > 0 {
                 item.destination = .seasons
-                item.items = remappedSeasons
+
+                item.items = Section.remappedSeasonItems(tv)
             }
 
             items.append(item)
@@ -234,6 +240,52 @@ private extension Section {
         return Section(header: "related", items: [item])
     }
 
+}
+
+private extension Section {
+    static func remappedSeasonItems(_ tv: TV?) -> [Item] {
+        var items: [Item] = []
+        if let seasons = tv?.seasons {
+            items = seasons.filter {
+                let count = $0.episode_count
+                return count ?? 0 > 0
+            }.map { $0.listItem(tvId: tv?.id) }
+        }
+
+        return items
+    }
+}
+
+private extension Credit {
+    var castItem: Item {
+        return Item(id: id, title: name, subtitle: character, destination: .person)
+    }
+
+    var creatorItem: Item {
+        return Item(id: id, title: name, destination: .person)
+    }
+
+    var crewItem: Item {
+        return Item(id: id, title: name, subtitle: job, destination: .person)
+    }
+}
+
+private extension Season {
+    func listItem(tvId: Int?) -> Item {
+        var sub: [String] = []
+
+        if let _ = air_date {
+            sub.append(air_date.yearDisplay)
+        }
+
+        if let c = episode_count,
+            c > 0 {
+            let string = "\(c) episode\(c.pluralized)"
+            sub.append(string)
+        }
+
+        return Item(id: tvId, title: name, subtitle: sub.joined(separator: Tmdb.separator), destination: .season, seasonNumber: season_number)
+    }
 }
 
 private extension TV {
@@ -291,29 +343,4 @@ private extension TV {
         return "\(count) season\(count == 1 ? "" : "s")"
     }
 
-}
-
-private extension Credit {
-    var castItem: Item {
-        return Item(id: id, title: name, subtitle: character, destination: .person)
-    }
-
-    var creatorItem: Item {
-        return Item(id: id, title: name, destination: .person)
-    }
-
-    var crewItem: Item {
-        return Item(id: id, title: name, subtitle: job, destination: .person)
-    }
-}
-
-private extension Season {
-    func listItem(tvId: Int?) -> Item {
-        var airDate: String?
-        if let _ = air_date {
-            airDate = air_date.yearDisplay
-        }
-
-        return Item(id: tvId, title: name, subtitle: airDate, destination: .season, seasonNumber: season_number)
-    }
 }

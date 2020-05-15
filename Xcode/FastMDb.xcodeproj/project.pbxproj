@@ -39,7 +39,6 @@
 		65530B9E246E4C440045DC1B /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530B9D246E4C440045DC1B /* Genre.swift */; };
 		65530BA0246E4C680045DC1B /* Production.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530B9F246E4C680045DC1B /* Production.swift */; };
 		65530BA2246E4CBB0045DC1B /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530BA1246E4CBB0045DC1B /* Video.swift */; };
-		65530BA4246E4D470045DC1B /* EpisodeList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530BA3246E4D470045DC1B /* EpisodeList.swift */; };
 		65530BA6246E4DA10045DC1B /* TvNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530BA5246E4DA10045DC1B /* TvNetwork.swift */; };
 		65530BA8246E4DC30045DC1B /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530BA7246E4DC30045DC1B /* Episode.swift */; };
 		65530BAA246E4DF90045DC1B /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65530BA9246E4DF90045DC1B /* Season.swift */; };
@@ -92,7 +91,6 @@
 		65530B9D246E4C440045DC1B /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
 		65530B9F246E4C680045DC1B /* Production.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Production.swift; sourceTree = "<group>"; };
 		65530BA1246E4CBB0045DC1B /* Video.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
-		65530BA3246E4D470045DC1B /* EpisodeList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeList.swift; sourceTree = "<group>"; };
 		65530BA5246E4DA10045DC1B /* TvNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TvNetwork.swift; sourceTree = "<group>"; };
 		65530BA7246E4DC30045DC1B /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		65530BA9246E4DF90045DC1B /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 				654D0F85246B16C800B2A968 /* Credits.swift */,
 				654D0F86246B16C800B2A968 /* DataProvider.swift */,
 				65530BA7246E4DC30045DC1B /* Episode.swift */,
-				65530BA3246E4D470045DC1B /* EpisodeList.swift */,
 				654D0F88246B16C800B2A968 /* Extensions.swift */,
 				654D0F8A246B16C800B2A968 /* ExternalIds.swift */,
 				65530B9D246E4C440045DC1B /* Genre.swift */,
@@ -304,7 +301,6 @@
 				65530BA0246E4C680045DC1B /* Production.swift in Sources */,
 				65530B9C246E12370045DC1B /* Section+Production.swift in Sources */,
 				654D0F98246B16C900B2A968 /* MediaCollection.swift in Sources */,
-				65530BA4246E4D470045DC1B /* EpisodeList.swift in Sources */,
 				654D0F81246B16BA00B2A968 /* External.swift in Sources */,
 				654D0F91246B16C900B2A968 /* DataProvider.swift in Sources */,
 				65530B9E246E4C440045DC1B /* Genre.swift in Sources */,

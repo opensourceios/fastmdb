@@ -154,6 +154,9 @@ struct Tmdb {
         var urlComponents = baseComponents
         urlComponents.path = "\(Path.tv)/\(tvId)/season/\(seasonNumber)"
 
+        let appendQueryItem = URLQueryItem(name: "append_to_response", value: "credits")
+        urlComponents.queryItems = [ Tmdb.keyQueryItem, appendQueryItem ]
+
         return urlComponents.url
     }
 

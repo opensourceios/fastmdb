@@ -7,6 +7,12 @@
 
 import Foundation
 
+extension Int {
+    var pluralized: String {
+        return self == 1 ? "" : "s"
+    }
+}
+
 extension String {
     
     var dateDisplay: String? {
@@ -50,7 +56,7 @@ extension Optional where Wrapped == String {
 /// Credits: https://www.avanderlee.com/swift/unique-values-removing-duplicates-array/
 extension Sequence where Iterator.Element: Hashable {
 
-    func unique() -> [Iterator.Element] {
+    var unique: [Iterator.Element] {
         var seen: Set<Iterator.Element> = []
         return filter { seen.insert($0).inserted }
     }

@@ -27,6 +27,7 @@ struct Media: Codable {
     var original_language: String?
     var overview: String
     var production_companies: [Production]?
+    var production_countries: [ProductionCountry]?
     var poster_path: String?
     var recommendations: MediaSearch?
     var release_date: String?
